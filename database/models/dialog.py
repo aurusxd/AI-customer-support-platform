@@ -1,17 +1,20 @@
 from __future__ import annotations
-from datetime import datetime
+
 from typing import TYPE_CHECKING
+
 from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, String, UniqueConstraint, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from utils.enums.dialog_status import DialogStatus
 from database.models.base import Base
+from utils.enums.dialog_status import DialogStatus
 
 if TYPE_CHECKING:
+    from datetime import datetime
+
     from database.models.channel import Channel
     from database.models.customer import Customer
     from database.models.message import Message
-    from database.models.support_ticket import SupportTicket   
+    from database.models.support_ticket import SupportTicket
 
 
 class Dialog(Base):
@@ -56,22 +59,21 @@ class Dialog(Base):
         onupdate=func.now(),
     )
 
-    customer: Mapped["Customer"] = relationship(back_populates="dialogs")
-    channel: Mapped["Channel"] = relationship(back_populates="dialogs")
+    customer: Mapped[Customer] = relationship(back_populates="dialogs")
+    channel: Mapped[Channel] = relationship(back_populates="dialogs")
 
-    messages: Mapped[list["Message"]] = relationship(
+    messages: Mapped[list[Message]] = relationship(
         back_populates="dialog",
         cascade="all, delete-orphan",
     )
 
-
-    tickets: Mapped[list["SupportTicket"]] = relationship(
+    tickets: Mapped[list[SupportTicket]] = relationship(
         back_populates="dialog",
         cascade="all, delete-orphan",
     )
     __table_args__ = (
         UniqueConstraint(
-            "employee_id",
+            "customer_id",
             "channel_id",
             "client_external_id",
             name="uq_dialog_employee_channel_client",

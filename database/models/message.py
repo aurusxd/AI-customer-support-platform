@@ -1,15 +1,18 @@
 from __future__ import annotations
-from datetime import datetime
+
 from typing import TYPE_CHECKING
 
 from sqlalchemy import DateTime, ForeignKey, Integer, String, Text, UniqueConstraint, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from utils.enums.message_status import SenderType
 from database.models.base import Base
 
 if TYPE_CHECKING:
+    from datetime import datetime
+
     from database.models.dialog import Dialog
+    from utils.enums.message_status import SenderType
+
 
 class Message(Base):
     __tablename__ = "messages"
@@ -34,7 +37,7 @@ class Message(Base):
         server_default=func.now(),
     )
 
-    dialog: Mapped["Dialog"] = relationship(back_populates="messages")
+    dialog: Mapped[Dialog] = relationship(back_populates="messages")
 
     __table_args__ = (
         UniqueConstraint(

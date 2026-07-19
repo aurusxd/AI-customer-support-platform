@@ -1,5 +1,5 @@
 from __future__ import annotations
-from datetime import datetime
+
 from typing import TYPE_CHECKING
 
 from sqlalchemy import DateTime, Integer, String, func
@@ -8,8 +8,10 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from database.models.base import Base
 
 if TYPE_CHECKING:
-    from database.models.document import Document
+    from datetime import datetime
+
     from database.models.channel import Channel
+    from database.models.document import Document
 
 
 class User(Base):
@@ -26,13 +28,12 @@ class User(Base):
         server_default=func.now(),
     )
 
-    document: Mapped[list["Document"]] = relationship(
+    document: Mapped[list[Document]] = relationship(
         back_populates="user",
         cascade="all, delete-orphan",
     )
 
-    channels: Mapped[list["Channel"]] = relationship(
+    channels: Mapped[list[Channel]] = relationship(
         back_populates="user",
         cascade="all, delete-orphan",
     )
-

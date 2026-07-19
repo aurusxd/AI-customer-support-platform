@@ -1,15 +1,18 @@
 from __future__ import annotations
-from datetime import datetime
+
+from typing import TYPE_CHECKING
 
 from sqlalchemy import DateTime, ForeignKey, Integer, String, Text, UniqueConstraint, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from utils.enums.channel_status import ChannelStatus, ChannelType
+
 from database.models.base import Base
-from typing import TYPE_CHECKING
+from utils.enums.channel_status import ChannelStatus, ChannelType
 
 if TYPE_CHECKING:
-    from database.models.user import User
+    from datetime import datetime
+
     from database.models.dialog import Dialog
+    from database.models.user import User
 
 
 class Channel(Base):
@@ -54,12 +57,10 @@ class Channel(Base):
         server_default=func.now(),
     )
 
-    user: Mapped["User"] = relationship(back_populates="channels")
+    user: Mapped[User] = relationship(back_populates="channels")
 
-    dialogs: Mapped[list["Dialog"]] = relationship(
+    dialogs: Mapped[list[Dialog]] = relationship(
         back_populates="channel",
     )
 
-    __table_args__ = (
-        UniqueConstraint("type", "external_id", name="uq_channel_type_external_id"),
-    )
+    __table_args__ = (UniqueConstraint("type", "external_id", name="uq_channel_type_external_id"),)

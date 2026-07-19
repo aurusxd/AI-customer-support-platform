@@ -52,6 +52,4 @@ class Order(Base):
         server_default=func.now(),
     )
 
-    customer: Mapped["Customer"] = relationship(
-        back_populates="orders"
-    )
+    customer: Mapped["Customer"] = relationship(back_populates="orders")

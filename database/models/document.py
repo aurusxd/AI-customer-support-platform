@@ -1,14 +1,16 @@
 from __future__ import annotations
-from datetime import datetime
+
 from typing import TYPE_CHECKING
 
 from sqlalchemy import DateTime, ForeignKey, Integer, String, Text, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from utils.enums.document_file_status import DocumentFileStatus
 from database.models.base import Base
+from utils.enums.document_file_status import DocumentFileStatus
 
 if TYPE_CHECKING:
+    from datetime import datetime
+
     from database.models.user import User
 
 
@@ -43,4 +45,4 @@ class Document(Base):
         server_default=func.now(),
     )
 
-    user: Mapped["User"] = relationship(back_populates="document")
+    user: Mapped[User] = relationship(back_populates="document")

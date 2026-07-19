@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from datetime import datetime
 from typing import TYPE_CHECKING
 
 from sqlalchemy import DateTime, ForeignKey, Integer, String, Text, func
@@ -11,6 +10,8 @@ from utils.enums.categories import Categories
 from utils.enums.ticket_status import TicketStatus
 
 if TYPE_CHECKING:
+    from datetime import datetime
+
     from database.models.customer import Customer
     from database.models.dialog import Dialog
 
@@ -55,10 +56,6 @@ class SupportTicket(Base):
         nullable=False,
     )
 
-    customer: Mapped["Customer"] = relationship(
-        back_populates="tickets"
-    )
+    customer: Mapped[Customer] = relationship(back_populates="tickets")
 
-    dialog: Mapped["Dialog"] = relationship(
-        back_populates="tickets"
-    )
+    dialog: Mapped[Dialog] = relationship(back_populates="tickets")
