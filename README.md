@@ -282,9 +282,9 @@ AI Agent
 - OpenAI API или другая совместимая LLM;
 - Tool Calling;
 - RAG;
-- LangChain или собственная реализация;
+- LangChain;
 - LangGraph;
-- Qdrant или ChromaDB.
+- Qdrant.
 
 ### Инфраструктура
 
